@@ -36,7 +36,7 @@ using the React framework (front end)
 tcpServer.on() -> while the TCP method is on, console.log at the start of the TCP connections.
 This also contains a suite of WebSocket methods.
 
-### **Diagnosing the Issue** 
+### **Diagnosing the Issue; Part 1** 
 Changing output speed in battery_emulator.ts from 500ms to 1500ms. (Boomer reaction speed)
 
 Currently, there is no correct error handling behaviour for when the generated temperature value is not within the given range.
@@ -52,3 +52,29 @@ One solution we can implement is to make a small change when the request is sent
 This is critical as Redback users need to know when the battery hits those critical temperatures.
 
 =========================================================================
+
+## 21/02/2023 - Day Two
+
+### **Diagnosing the Issue; Part 2**
+
+After Part 1, the program will NOT halt execution of the of server.ts.
+
+PART 2 TODO: The battery has a safe operating range of 20˚C to 80˚C
+
+Add a feature to the backend streaming service so that each time the received battery temperature **exceeds this range more than 3 times in 5 seconds**, the current timestamp is logged to a file named 'incidents.log'.
+
+1. Find a way to keep track of the time.
+    a. setInterval() ? setTimeout() ?
+2. Find a way to keep track of how many errors have been logged to the console.
+3. If it crosses the threshhold stated, use writeFile() / writeFileSync() to log the results onto a file called 'incidents.log'
+    a. Can I automatically assume that incidents.log is already created?
+    b. I actually don't know too much about the difference between writeFile() and writeFileSync(). I think it has something to do with when the functione executes.
+
+
+=========================================================================
+
+## APPENDIX
+I *think* DS_store is safe to delete. From my research, it's just a file that macOS creates to display directories or smth. 
+
+It doesn't show up in the file explorer on VSCode but I should probably add it to the .gitignore.
+- RESOLVED
