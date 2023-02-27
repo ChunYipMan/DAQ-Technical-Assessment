@@ -39,17 +39,12 @@ This also contains a suite of WebSocket methods.
 ### **Diagnosing the Issue; Part 1** 
 Changing output speed in battery_emulator.ts from 500ms to 1500ms. (Boomer reaction speed)
 
-Currently, there is no correct error handling behaviour for when the generated temperature value is not within the given range.
+Currently, there is no correct error handling behaviour for the randomly generated error flag of 3.
 
 One solution we can implement is to make a small change when the request is sent to the front end.
-- Within Line 17 of server.ts the JSON.parse method is failing from an invalid temperature because of the appended close bracket from Line 36 of battery_emulator.ts.
+- Within Line 17 of server.ts the JSON.parse method is failing from an invalid error flag because of the appended close bracket from Line 36 of battery_emulator.ts.
 - What we can do instead, is we can wrap the JSON.parse method in a try/catch statement and output the errors to the console.
     - At least this way, any errors produced won't halt the program execution.
-
-> !! HOWERVER, invalid temperatures won't be displayed on the webpage and errors will only show up on the terminal which users are unlikely to open.
-    > RESOLVED: With Part 2.
-
-This is critical as Redback users need to know when the battery hits those critical temperatures.
 
 =========================================================================
 
@@ -65,10 +60,12 @@ Add a feature to the backend streaming service so that each time the received ba
 
 1. Find a way to keep track of the time.
     a. setInterval() ? setTimeout() ?
+        - This is going nowhere. Instead, I'll make use of the data object given in the data emulator.
+        - Everytime there is a temperature exceeding the range, keep it noted and compare the timestamps provided from the emulated data object.
 2. Find a way to keep track of how many errors have been logged to the console.
 3. If it crosses the threshhold stated, use writeFile() / writeFileSync() to log the results onto a file called 'incidents.log'
     a. Can I automatically assume that incidents.log is already created?
-    b. I actually don't know too much about the difference between writeFile() and writeFileSync(). I think it has something to do with when the functione executes.
+    b. I actually don't know too much about the difference between writeFile() and writeFileSync(). I think it has something to do with when the function executes.
 
 
 =========================================================================

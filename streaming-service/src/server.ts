@@ -17,8 +17,7 @@ tcpServer.on('connection', (socket) => {
         try {
             let currJSON = JSON.parse(msg.toString());
         } catch (e: any) {
-            //throw new RangeError("Invalid temperature reading");
-            console.error(`${e.name}: ${e.message}`);
+            console.error('ruh roh! client error!');
         }
 
         websocketServer.clients.forEach(function each(client) {
